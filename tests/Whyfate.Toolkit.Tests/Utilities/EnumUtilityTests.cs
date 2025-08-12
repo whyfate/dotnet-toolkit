@@ -12,6 +12,7 @@ public class EnumUtilityTests
         Assert.Equal(Gender.Famale, "Famale".Parse<Gender>());
         Assert.Equal(Gender.Unknown, "Unknown".Parse<Gender>());
         Assert.Equal(Gender.Male, "Male2".Parse<Gender>());
+        Assert.Equal(Gender.Male, "Male2".Parse<Gender>(Gender.Male));
     }
 
     [Fact]
@@ -19,6 +20,7 @@ public class EnumUtilityTests
     {
         Assert.Equal(Gender.Male, "Male".Parse<Gender>());
         Assert.Equal(Gender.Famale, "Male2".Parse(Gender.Famale));
+        Assert.Equal(Gender.Male, "Male".Parse(Gender.Famale));
     }
 
 
@@ -28,6 +30,7 @@ public class EnumUtilityTests
         Assert.Equal("1", Gender.Male.GetAttribute<Gender, CodeAttribute>()?.Code);
         Assert.Equal("2", Gender.Famale.GetAttribute<Gender, CodeAttribute>()?.Code);
         Assert.Equal("9", Gender.Unknown.GetAttribute<Gender, CodeAttribute>()?.Code);
+        Assert.Null(((Gender)3).GetAttribute<Gender, CodeAttribute>()?.Code);
     }
 
     [Fact]

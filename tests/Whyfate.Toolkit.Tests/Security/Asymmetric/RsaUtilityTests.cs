@@ -39,6 +39,11 @@ public class RsaUtilityTests
         {
             RsaUtility.Encrypt("", "", RSAEncryptionPadding.OaepSHA256);
         });
+        
+        Assert.Throws<ArgumentNullException>(() =>
+        {
+            RsaUtility.Encrypt("test key", "", RSAEncryptionPadding.OaepSHA256);
+        });
     }
     
     [Fact]

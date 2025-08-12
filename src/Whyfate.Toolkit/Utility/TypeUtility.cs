@@ -7,8 +7,10 @@ namespace Whyfate.Toolkit.Utility;
 /// </summary>
 public static class TypeUtility
 {
-    private static readonly Lock _lock = new Lock();
-    private static readonly ConcurrentDictionary<string, Type?> _typeCaches = new ConcurrentDictionary<string, Type?>();
+    /// <summary>
+    /// type cache.
+    /// </summary>
+    private static readonly ConcurrentDictionary<string, Type?> TypeCaches = new();
 
     /// <summary>
     /// get type from typename.
@@ -17,22 +19,12 @@ public static class TypeUtility
     /// <returns></returns>
     public static Type? GetType(string typeName)
     {
-        if (_typeCaches.TryGetValue(typeName, out var t1))
+        return TypeCaches.GetOrAdd(typeName, tName =>
         {
-            return t1;
-        }
-
-        lock (_lock)
-        {
-            if (_typeCaches.TryGetValue(typeName, out var t2))
-            {
-                return t2;
-            }
-
             Type? type = null;
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                var tmp = assembly.GetType(typeName);
+                var tmp = assembly.GetType(tName);
                 if (tmp != null)
                 {
                     type = tmp;
@@ -40,9 +32,8 @@ public static class TypeUtility
                 }
             }
 
-            _typeCaches.TryAdd(typeName, type);
             return type;
-        }
+        });
     }
 
     /// <summary>
