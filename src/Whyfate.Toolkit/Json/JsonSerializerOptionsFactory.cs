@@ -27,12 +27,7 @@ public static class JsonSerializerOptionsFactory
     /// <param name="options"></param>
     public static void Set(JsonSerializerOptions options)
     {
-        if (_options == null)
-        {
-            throw new ArgumentNullException(nameof(options));
-        }
-
-        _options = options;
+        _options = options ?? throw new ArgumentNullException(nameof(options));
     }
 
     /// <summary>

@@ -34,6 +34,27 @@ public class JsonUtilityTests
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         });
     }
+    
+    [Fact]
+    public void TestSetOptions()
+    {
+        JsonSerializerOptionsFactory.Set(new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+        var options = JsonSerializerOptionsFactory.Get();
+        Assert.NotNull(options);
+        Assert.True(options.PropertyNameCaseInsensitive);
+    }
+    
+    [Fact]
+    public void TestException()
+    {
+        Assert.Throws<ArgumentNullException>(() =>
+        {
+            JsonSerializerOptionsFactory.Set(null!);
+        });
+    }
 }
 
 class Person(string id, int age, DateOnly birthDay, DateTime createTime)
