@@ -12,8 +12,12 @@ public class ExceptionTests
     {
         var ex = new InvalidParameterException("username must not be empty.");
         Assert.Equal(ErrorCodes.InvalidParameter, ex.ErrorCode);
-
+        ex = new InvalidParameterException(ErrorCodes.InvalidParameter,"username must not be empty.");
+        Assert.Equal(ErrorCodes.InvalidParameter, ex.ErrorCode);
+        
         var ex2 = new ResourceNotFoundException();
+        Assert.Equal(ErrorCodes.ResourceNotFound, ex2.ErrorCode);
+        ex2 = new ResourceNotFoundException(ErrorCodes.ResourceNotFound,"resource not found");
         Assert.Equal(ErrorCodes.ResourceNotFound, ex2.ErrorCode);
     }
 
@@ -41,7 +45,11 @@ public class ExceptionTests
     [Fact]
     public void TestInnerException()
     {
-        var ex = new ForbiddenException(ErrorCodes.Forbidden, "Forbidden",new Exception("Inner exception"));
-        Assert.NotNull(ex.InnerException);
+        var ex1 = new InvalidParameterException(ErrorCodes.InvalidParameter, "invalid parameter",new Exception("Inner exception"));
+        var ex2 = new ServerUnknownErrorException(ErrorCodes.ServerUnknownError, "ServerUnknownError",new Exception("Inner exception"));
+        var ex3 = new ForbiddenException(ErrorCodes.Forbidden, "Forbidden",new Exception("Inner exception"));
+        Assert.NotNull(ex1.InnerException);
+        Assert.NotNull(ex2.InnerException);
+        Assert.NotNull(ex3.InnerException);
     }
 }
