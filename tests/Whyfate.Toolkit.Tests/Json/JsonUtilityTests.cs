@@ -29,18 +29,16 @@ public class JsonUtilityTests
             "é"
         };
 
-        var json = JsonSerializer.Serialize(list, new JsonSerializerOptions
-        {
-            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-        });
+        var json = JsonUtility.Serialize(list);
+        Assert.NotNull(json);
     }
-    
+
     [Fact]
     public void TestSerializeType()
     {
         Person p1 = new Student("1", 35, DateOnly.Parse("2000-01-01"), DateTime.Now, "L1");
-        var json1 = JsonSerializer.Serialize(p1);
-        var json2 = JsonSerializer.Serialize(p1,typeof(Student));
+        var json1 = JsonUtility.Serialize(p1, typeof(Person));
+        var json2 = JsonUtility.Serialize(p1, typeof(Student));
         Assert.NotNull(json1);
         Assert.NotNull(json2);
         Assert.DoesNotContain("L1", json1);
@@ -87,7 +85,8 @@ class Person(string id, int age, DateOnly birthDay, DateTime createTime)
     public DateTime CreateTime { get; } = createTime;
 }
 
-class Student(string id, int age, DateOnly birthDay, DateTime createTime, string grade) : Person(id, age, birthDay, createTime)
+class Student(string id, int age, DateOnly birthDay, DateTime createTime, string grade)
+    : Person(id, age, birthDay, createTime)
 {
     public string Grade { get; set; } = grade;
 }
