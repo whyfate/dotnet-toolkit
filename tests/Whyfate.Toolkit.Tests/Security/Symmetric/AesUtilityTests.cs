@@ -7,17 +7,10 @@ public class AesUtilityTests
     private readonly string _key = "pass.whyfate.com";
     private readonly string _iv = "abcdef9876543210";
 
-    private readonly string _plainText = """
-                                        {
-                                          "a":"a",
-                                          "b": 1,
-                                          "c": [],
-                                          "d": true
-                                        }
-                                        """;
+    private readonly string _plainText = "{\"a\":\"a\",\"b\":1,\"c\":[],\"d\":true}";
 
-    private readonly string _ecbCipherText = "b2DQ03I23JeZQZz3WOygsOcomzPOKbagtnJAyLy+l6mtmPN3RSIbumO28lJXVdWhiWe/AESZT7aB0vM+xBsUgg==";
-    private readonly string _cbcCipherText = "tQtKCyXecrW/zO6kEMV+8yoxnRjhl2HOt9ZBH67h1kp1HTjnOC9M/3WNXtP3mIDwhdLAUcUaYXWCtPRDO2UZRQ==";
+    private readonly string _ecbCipherText = "TLJbqtZLs1vfLrhGgZcAM2M4ExpMN/I599fTU2NVN88=";
+    private readonly string _cbcCipherText = "c7iidVI1d8vs4GKYDRhEYe0WI1XXQkcf/7YNGFT4JJY=";
 
     [Fact]
     public void TestEncrypt()
@@ -36,7 +29,7 @@ public class AesUtilityTests
     [Fact]
     public void TestEncryptCbc()
     {
-        var result = AesUtility.Encrypt(_plainText, _key,_iv);
+        var result = AesUtility.Encrypt(_plainText, _key, _iv);
         Assert.Equal(_cbcCipherText, result);
     }
 
