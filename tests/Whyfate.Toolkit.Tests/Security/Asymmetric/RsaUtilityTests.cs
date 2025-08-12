@@ -71,5 +71,9 @@ public class RsaUtilityTests
         var success = RsaUtility.TryDecryptData(RsaUtility.PrivateKey,"test error data", RSAEncryptionPadding.OaepSHA256,out string? data);
         Assert.False(success);
         Assert.Null(data);
+        
+        success = RsaUtility.TryDecryptData("","test error data", RSAEncryptionPadding.OaepSHA256,out string? data2);
+        Assert.False(success);
+        Assert.Null(data2);
     }
 }
