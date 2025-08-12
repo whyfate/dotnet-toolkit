@@ -25,15 +25,6 @@ public abstract class AggregateRoot
     }
 
     /// <summary>
-    /// remove event.
-    /// </summary>
-    /// <param name="eventItem"></param>
-    public void RemoveDomainEvent(DomainEvent eventItem)
-    {
-        _domainEvents.Remove(eventItem);
-    }
-
-    /// <summary>
     /// clear events.
     /// </summary>
     public void ClearDomainEvents()

@@ -23,6 +23,29 @@ public class DomainTests
     }
 
     [Fact]
+    public void TestAggregateRootClearEvents()
+    {
+        var address = new Address("1", "1", "1", "1", "1");
+        var order = new Order
+        {
+            Id = "1",
+            Address = address,
+        };
+        
+        order.AddItem("1","test",1,1);
+
+        Assert.NotNull(order);
+
+        order.Paid();
+
+        Assert.Single(order.DomainEvents);
+        Assert.Single(order.Items);
+        
+        order.ClearDomainEvents();
+        Assert.Empty(order.DomainEvents);
+    }
+    
+    [Fact]
     public void TestValueObject()
     {
         var address1 = new Address("1", "1", "1", "1", "1");

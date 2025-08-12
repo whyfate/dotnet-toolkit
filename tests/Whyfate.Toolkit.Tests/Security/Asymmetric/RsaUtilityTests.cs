@@ -26,4 +26,40 @@ public class RsaUtilityTests
         Assert.True(success);
         Assert.Equal(txt, decryptData2);
     }
+    
+    [Fact]
+    public void TestEncryptException()
+    {
+        Assert.Throws<ArgumentNullException>(() =>
+        {
+            RsaUtility.Encrypt("");
+        });
+        
+        Assert.Throws<ArgumentNullException>(() =>
+        {
+            RsaUtility.Encrypt("", "", RSAEncryptionPadding.OaepSHA256);
+        });
+    }
+    
+    [Fact]
+    public void TestDecryptException()
+    {
+        Assert.Throws<ArgumentNullException>(() =>
+        {
+            RsaUtility.Decrypt("");
+        });
+        
+        Assert.Throws<ArgumentNullException>(() =>
+        {
+            RsaUtility.Decrypt("", "", RSAEncryptionPadding.OaepSHA256);
+        });
+    }
+    
+    [Fact]
+    public void TestTryDecryptData()
+    {
+        var success = RsaUtility.TryDecryptData(RsaUtility.PrivateKey,"test error data", RSAEncryptionPadding.OaepSHA256,out string? data);
+        Assert.False(success);
+        Assert.Null(data);
+    }
 }

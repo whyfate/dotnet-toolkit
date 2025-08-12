@@ -37,4 +37,11 @@ public class ExceptionTests
         var ex2 = new UnauthorizedException();
         Assert.Equal(ErrorCodes.Unauthorized, ex2.ErrorCode);
     }
+
+    [Fact]
+    public void TestInnerException()
+    {
+        var ex = new ForbiddenException(ErrorCodes.Forbidden, "Forbidden",new Exception("Inner exception"));
+        Assert.NotNull(ex.InnerException);
+    }
 }

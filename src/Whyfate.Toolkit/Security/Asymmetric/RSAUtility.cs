@@ -147,7 +147,7 @@ public static class RsaUtility
         try
         {
             decryptData = Decrypt(privateKey, encryptedData, padding);
-            return true;
+            return !string.IsNullOrWhiteSpace(decryptData);
         }
         catch
         {
