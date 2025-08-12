@@ -1,20 +1,20 @@
-name: Build and Test .NET Project
+name: Build, Test and Coverage
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
-  build:
+  build-test-coverage:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup .NET
+      - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
@@ -22,14 +22,23 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build
+      - name: Build solution
         run: dotnet build --configuration Release --no-restore
 
-      - name: Run tests
-        run: dotnet test --verbosity normal --logger "trx;LogFileName=test_results.trx"
+      - name: Run tests Whyfate.Toolkit.Tests with coverage
+        run: dotnet test tests/Whyfate.Toolkit.Tests/Whyfate.Toolkit.Tests.csproj --collect:"XPlat Code Coverage"
 
-      - name: Upload test results
+      # - name: Run tests Whyfate.Toolkit.Other.Tests project with coverage
+      #  run: dotnet test tests/Whyfate.Toolkit.Other.Tests/Whyfate.Toolkit.Other.Tests.csproj --collect:"XPlat Code Coverage"
+
+      - name: Install reportgenerator tool
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
+      - name: Generate coverage report
+        run: reportgenerator -reports:**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:Html
+
+      - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Test Results
-          path: '**/test_results.trx'
+          name: coverage-report
+          path: coverage-report
