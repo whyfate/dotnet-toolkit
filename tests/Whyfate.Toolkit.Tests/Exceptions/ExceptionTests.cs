@@ -45,11 +45,17 @@ public class ExceptionTests
     [Fact]
     public void TestInnerException()
     {
-        var ex1 = new InvalidParameterException(ErrorCodes.InvalidParameter, "invalid parameter",new Exception("Inner exception"));
+        var ex0 = new InvalidParameterException(ErrorCodes.InvalidParameter, "invalid parameter",new Exception("Inner exception"));
+        var ex1 = new ResourceNotFoundException(ErrorCodes.ResourceNotFound, "resource not found",new Exception("Inner exception"));
         var ex2 = new ServerUnknownErrorException(ErrorCodes.ServerUnknownError, "ServerUnknownError",new Exception("Inner exception"));
-        var ex3 = new ForbiddenException(ErrorCodes.Forbidden, "Forbidden",new Exception("Inner exception"));
+        var ex3 = new ServiceUnavailableException(ErrorCodes.ServiceUnavailable,"test-svc", "ServiceUnavailable",new Exception("Inner exception"));
+        var ex4 = new ForbiddenException(ErrorCodes.Forbidden, "Forbidden",new Exception("Inner exception"));
+        var ex5 = new UnauthorizedException(ErrorCodes.Unauthorized, "Unauthorized",new Exception("Inner exception"));
+        Assert.NotNull(ex0.InnerException);
         Assert.NotNull(ex1.InnerException);
         Assert.NotNull(ex2.InnerException);
         Assert.NotNull(ex3.InnerException);
+        Assert.NotNull(ex4.InnerException);
+        Assert.NotNull(ex5.InnerException);
     }
 }
